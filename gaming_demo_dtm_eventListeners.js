@@ -1,12 +1,10 @@
-document.getElementById('dtmEventTarget').addEventListener('allSportsNavigation',
+document.getElementById('dtmEventTarget').addEventListener('sportbookEvents',
     function (evt) {
         var eventData = evt.detail;
         var payload = {
             'tealium_event': 'category_view',
-            'adf_page_name': "Registration complete",
             'user_id': eventData.userId,
-            'timestamp': new Date(),
-            'adf_channel': _satellite.getVar("campaignTrackingCode")
+            'timestamp': new Date()
         };
         if (eventData.fields && eventData.fields.constructor === Array) {
             for (var i = 0; i < eventData.fields.length; i++) {
