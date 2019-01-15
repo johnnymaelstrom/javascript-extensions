@@ -654,11 +654,11 @@ document.getElementById('dtmEventTarget').addEventListener('sportbookEvents',
                         //this set of conditions determine active visualisation tab. The same data is available in the kambi visualisation event, but we do it this way because kambi visualisation tabs can be executed multiple times after page view happens, for each vis tab element separately, so we can't rely on eventData.kambi.tabs.activevisualisationtab
                         var activevisualisationtab = '';
                         if (eventData.kambi.tabs.streaming === 'true') {
-                            activevisualisationtab = 'streaming';
+                            activevisualisationtab = 'streamPlayer';
                         } else if (eventData.kambi.tabs.visualisation === 'true') {
                             activevisualisationtab = 'visualisation';
                         } else if (eventData.kambi.tabs.livestat === 'true') {
-                            activevisualisationtab = 'livestat';
+                            activevisualisationtab = 'liveStats';
                         }
 
                         payload.product_info_8.push(activevisualisationtab + ':' + eventData.kambi.tabs.streaming + ':' + eventData.kambi.tabs.visualisation + ':' + eventData.kambi.tabs.livestat);
