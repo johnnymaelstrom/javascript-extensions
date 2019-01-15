@@ -1,7 +1,7 @@
 document.getElementById('dtmEventTarget').addEventListener('GameLaunch',
-    function(evt) {
+    function (evt) {
         var eventData = evt.detail;
-        var f = function() {
+        var f = function () {
             utag.link({
                 'event_name': 'GameLaunch',
                 'adf_page_name': 'Game Launch: eventData: ' + JSON.stringify(eventData),
@@ -16,7 +16,7 @@ document.getElementById('dtmEventTarget').addEventListener('GameLaunch',
 
 
 document.getElementById('dtmEventTarget').addEventListener('depositRequested',
-    function(evt) {
+    function (evt) {
         var eventData = evt.detail;
         var noOfDeposits = eventData.noOfDeposits;
         if (eventData.status === "Redirected") {
@@ -46,7 +46,7 @@ document.getElementById('dtmEventTarget').addEventListener('depositRequested',
     });
 
 document.getElementById('dtmEventTarget').addEventListener('registrationSuccessful',
-    function(evt) {
+    function (evt) {
         var eventData = evt.detail;
         var payload = {
             'event_name': 'registrationSuccessful',
@@ -67,28 +67,28 @@ document.getElementById('dtmEventTarget').addEventListener('registrationSuccessf
     });
 
 document.getElementById('dtmEventTarget').addEventListener('pageLoaded',
-    function(evt) {
-      utag.pageLoadedFallback = true;
+    function (evt) {
+        utag.pageLoadedFallback = true;
         utag.view({
             'event_name': 'pageLoaded',
             'adf_channel': _satellite.cookie.get("AdformChannel"),
-            'user_id' : window.cms.user.customerId,
-            'is_app' : window.cms.device.isApp
+            'user_id': window.cms.user.customerId,
+            'is_app': window.cms.device.isApp
         });
     });
 
 
-window.addEventListener("load", function(event) {
-  if(!utag.pageLoadedFallback) {
-    utag.pageLoadedFallback = true;
+window.addEventListener("load", function (event) {
+    if (!utag.pageLoadedFallback) {
+        utag.pageLoadedFallback = true;
         utag.view({
             'event_name': 'pageLoaded',
-    	    'page_loaded_fallback' : true,
-    	    'adf_channel': _satellite.cookie.get("AdformChannel"),
-    	    'user_id' : window.cms.user.customerId,
-            'is_app' : window.cms.device.isApp
+            'page_loaded_fallback': true,
+            'adf_channel': _satellite.cookie.get("AdformChannel"),
+            'user_id': window.cms.user.customerId,
+            'is_app': window.cms.device.isApp
         });
-  }
+    }
 });
 
 /*
@@ -111,7 +111,7 @@ document.getElementById('dtmEventTarget').addEventListener('loginSuccess',
 
 // general-info/gamblingprofile, gambling self assessment test
 document.getElementById('dtmEventTarget').addEventListener('selfTestCompleted',
-    function(evt) {
+    function (evt) {
         var eventData = evt.detail;
 
         utag.link({
@@ -119,205 +119,205 @@ document.getElementById('dtmEventTarget').addEventListener('selfTestCompleted',
             'track_link_name': "selfTestCompleted",
             'user_id': eventData.userId,
             'timestamp': new Date(),
-            'self_test_result' : eventData.result,
-            'is_app' : window.cms.device.isApp
+            'self_test_result': eventData.result,
+            'is_app': window.cms.device.isApp
         });
     });
 
 
 
 
-    
+
 /*Frankel Finding Methods and Virtual pageViews & promotions - fraser 10th October  */
 /*To link the payload with the UI actions events are dispatched from Launch */
 document.getElementById('dtmEventTarget').addEventListener('promoDetailsAction',
-    function(evt) {
-    var isItaly = false;
-    var langVariant = "promotions"
-    if(document.location.host==="www.unibet.it") {
-      isItaly = true;
-      langVariant = 'promozioni';
-    }
-    var eventData = evt.detail;
-    var buttonName = eventData.button;
-    var promoName = eventData.promoName; 
-    var optIn = eventData.isOptIn; 
-    var isGame = eventData.isGame; 
-    var isCalendar = eventData.modal; 
-    var modalTitle = eventData.title; 
-    var day = eventData.day; 
-    var payload = {
-        'event_name': 'promoActionClick',
-        'adb_timestamp':Math.round(new Date().getTime()/1000),
-        'location':_satellite.getVar("browserLocale"),
-        'adb_domain':window.location.hostname,
-        'timestamp': new Date(),
-        'adf_page_name': 'Promotion Action: eventData: ' + JSON.stringify(eventData),
-        'adb_promotion_action_id': buttonName
-    };
-    payload.product_categories = [];
-    payload.product_ids = [];
-    payload.product_quantities = [];
-    payload.product_prices = [];
-    if (isCalendar === "shown"){
-        payload.adb_modal_action = 'viewed';
-    }else if (isCalendar === "clicked"){ 
-        payload.adb_modal_action = 'clicked';
-    }
-    if (isCalendar === "shown"||isCalendar === "clicked"){
-        payload.adb_calendar_day = day+'';
-    }
-    payload.product_categories.push((isCalendar === "shown")?'promotionsAdventCalendar' :'promotionsProfile');
-    if (window.cms.lobby.name.indexOf("Tournaments")!==-1 || typeof window.cms.widget.Game === "function" || isCalendar === "shown" || isCalendar === "clicked"){
-       payload.product_ids.push( ( (window.cms.lobby.name.indexOf("Tournaments")!==-1) ?
-       ("Tournament Lists:"+document.location.href.split('#')[1]):
-       (isCalendar === "shown" || isCalendar === "clicked")?(promoName.split('/').join(':')):("Game:"+_satellite.gameData.gameName + ":" +_satellite.gameData.gameId + ":" + _satellite.gameData.gameType) ) )
-       if (optIn && document.location.pathname.indexOf(langVariant) === -1){payload.adb_event8_filler = 'true';}
-    }else{
-    payload.product_ids.push(((isItaly) ? (document.location.href.indexOf('promozioni')!==-1)?
-    document.location.href.split('https://www.unibet.it')[1].split('/promozioni/')[1].split('/').join(':').split('#')[0].split('?')[0]:
-    document.location.href.split('https://www.unibet.it/')[1]:document.location.href.split('/promotions/')[1].split('/').join(':').split('#')[0].split('?')[0]));
-    }
-    payload.product_quantities.push('1')
-    payload.product_prices.push('0')
-    utag.link(payload);
-});
+    function (evt) {
+        var isItaly = false;
+        var langVariant = "promotions"
+        if (document.location.host === "www.unibet.it") {
+            isItaly = true;
+            langVariant = 'promozioni';
+        }
+        var eventData = evt.detail;
+        var buttonName = eventData.button;
+        var promoName = eventData.promoName;
+        var optIn = eventData.isOptIn;
+        var isGame = eventData.isGame;
+        var isCalendar = eventData.modal;
+        var modalTitle = eventData.title;
+        var day = eventData.day;
+        var payload = {
+            'event_name': 'promoActionClick',
+            'adb_timestamp': Math.round(new Date().getTime() / 1000),
+            'location': _satellite.getVar("browserLocale"),
+            'adb_domain': window.location.hostname,
+            'timestamp': new Date(),
+            'adf_page_name': 'Promotion Action: eventData: ' + JSON.stringify(eventData),
+            'adb_promotion_action_id': buttonName
+        };
+        payload.product_categories = [];
+        payload.product_ids = [];
+        payload.product_quantities = [];
+        payload.product_prices = [];
+        if (isCalendar === "shown") {
+            payload.adb_modal_action = 'viewed';
+        } else if (isCalendar === "clicked") {
+            payload.adb_modal_action = 'clicked';
+        }
+        if (isCalendar === "shown" || isCalendar === "clicked") {
+            payload.adb_calendar_day = day + '';
+        }
+        payload.product_categories.push((isCalendar === "shown") ? 'promotionsAdventCalendar' : 'promotionsProfile');
+        if (window.cms.lobby.name.indexOf("Tournaments") !== -1 || typeof window.cms.widget.Game === "function" || isCalendar === "shown" || isCalendar === "clicked") {
+            payload.product_ids.push(((window.cms.lobby.name.indexOf("Tournaments") !== -1) ?
+                ("Tournament Lists:" + document.location.href.split('#')[1]) :
+                (isCalendar === "shown" || isCalendar === "clicked") ? (promoName.split('/').join(':')) : ("Game:" + _satellite.gameData.gameName + ":" + _satellite.gameData.gameId + ":" + _satellite.gameData.gameType)))
+            if (optIn && document.location.pathname.indexOf(langVariant) === -1) { payload.adb_event8_filler = 'true'; }
+        } else {
+            payload.product_ids.push(((isItaly) ? (document.location.href.indexOf('promozioni') !== -1) ?
+                document.location.href.split('https://www.unibet.it')[1].split('/promozioni/')[1].split('/').join(':').split('#')[0].split('?')[0] :
+                document.location.href.split('https://www.unibet.it/')[1] : document.location.href.split('/promotions/')[1].split('/').join(':').split('#')[0].split('?')[0]));
+        }
+        payload.product_quantities.push('1')
+        payload.product_prices.push('0')
+        utag.link(payload);
+    });
 
 
 document.getElementById('dtmEventTarget').addEventListener('frankelPageView',
-    function(evt) {
-    
-    var eventData = evt.detail;
-    var position = eventData.index;
-    var menu = eventData.menu;
-    var commentary = eventData.commentary;
-    var payload = {
-        'event_name': 'frankelPageView',
-        'adb_timestamp':Math.round(new Date().getTime()/1000),
-        'location':_satellite.getVar("browserLocale"),
-        'adb_domain':window.location.hostname,
-        'timestamp': new Date()
-    };
-    utag.view(payload);
-});
+    function (evt) {
+
+        var eventData = evt.detail;
+        var position = eventData.index;
+        var menu = eventData.menu;
+        var commentary = eventData.commentary;
+        var payload = {
+            'event_name': 'frankelPageView',
+            'adb_timestamp': Math.round(new Date().getTime() / 1000),
+            'location': _satellite.getVar("browserLocale"),
+            'adb_domain': window.location.hostname,
+            'timestamp': new Date()
+        };
+        utag.view(payload);
+    });
 
 /* Betslip Cleanser Adds spacing in string locations */
 function betSlipCleanser(text) {
-  return text.replace(/(^|£+|To+|E\/W+)/g, " $1");
+    return text.replace(/(^|£+|To+|E\/W+)/g, " $1");
 }
-  
+
 /* Clean characters */
 function replaceChar(input) {
-  return input.replace(/[a-zA-Z]+/g,"");
+    return input.replace(/[a-zA-Z]+/g, "");
 }
 
 /* Clean Times */
 function replaceTime(input) {
-  return input.replace(/[0-9:]+/g,"");
+    return input.replace(/[0-9:]+/g, "");
 }
 
 /* Replace line breaksand and/or white space */
 function replaceLines(input, useWhite) {
-    if (useWhite){
-      return input.replace(/(\r\n|\s|\n|\r)/gm,"");
-    }else{
-      return input.replace(/(\r\n|\n|\r)/gm,"");
+    if (useWhite) {
+        return input.replace(/(\r\n|\s|\n|\r)/gm, "");
+    } else {
+        return input.replace(/(\r\n|\n|\r)/gm, "");
     }
 }
 /* Output Betslip values into a sanitised array */
 function betSlipUtil(element) {
-  var betSlipValues = [];
-    for (var fk = 0; fk < element.length; fk++){
+    var betSlipValues = [];
+    for (var fk = 0; fk < element.length; fk++) {
 
-      for (var fg = 0; fg < element[fk].children.length; fg++) {
+        for (var fg = 0; fg < element[fk].children.length; fg++) {
 
-        betSlipValues.push(betSlipCleanser(element[fk].children[fg].innerText));
+            betSlipValues.push(betSlipCleanser(element[fk].children[fg].innerText));
 
-      }
+        }
     }
     return betSlipValues;
 }
 
 document.getElementById('dtmEventTarget').addEventListener('betAdd',
-    function(evt) {
+    function (evt) {
 
         var eventData = evt.detail;
         var domain = _satellite.getVar("Domain");
 
-        if(typeof eventData!=="undefined"){
-          
-          /* Get betslip values from page */
-          /* DELAY ADDED DUE TO BETSLIP DELAY IN RENDER VS EVENT */
-           window.setTimeout(function(){ 
+        if (typeof eventData !== "undefined") {
+
+            /* Get betslip values from page */
+            /* DELAY ADDED DUE TO BETSLIP DELAY IN RENDER VS EVENT */
+            window.setTimeout(function () {
 
 
-            var payload = {
-                'event_name': 'betAdd',
-                'event_action_type':'frankel add to betslip',
-                'track_link_name':'frankel add to betslip',
-                'adb_timestamp':Math.round(new Date().getTime()/1000),
-                'location':_satellite.getVar("browserLocale"),
-                'adb_domain':window.location.hostname,
-                'is_live_stream':false,
-                'timestamp': new Date()
-            };
-            
-             /* Get items in betslip */
-             var betSlipAddResults = betSlipUtil($('.fkrc-bet-item')); 
-             /* Define or pass */
-             _satellite.containerArray = _satellite.containerArray || [], betSlipListSize = 4;   
-             /* Add values into 2D array for simple access */
-             _satellite.containerArray.push(betSlipAddResults.splice(betSlipAddResults.length - 4, betSlipListSize));
-             
-             //populate live streaming value as true in Telium and fire event9
-             if (eventData.watchingLiveStreaming) {
-                payload.is_live_stream = true;
-             }
-           
-            var containerArrayLength =  _satellite.containerArray.length,
-                frankeAttribution = (typeof _satellite.readCookie('dtm_ffm_attribution') !== "undefined")?_satellite.readCookie('dtm_ffm_attribution'):'^',
-                runnerName = replaceLines(_satellite.containerArray[containerArrayLength - 1][1],false).substring(1),
-                commentary = ($('#popup-audiostream')[0])?true:false,
-                idSplit, dateFormat;
-            
-            payload.product_categories = [];
-            payload.product_ids = [];
-            payload.product_quantities = [];
-            payload.product_prices = [];
-            payload.product_info_5 = []; //evar40
-            payload.adb_list_1= []; //list1
+                var payload = {
+                    'event_name': 'betAdd',
+                    'event_action_type': 'frankel add to betslip',
+                    'track_link_name': 'frankel add to betslip',
+                    'adb_timestamp': Math.round(new Date().getTime() / 1000),
+                    'location': _satellite.getVar("browserLocale"),
+                    'adb_domain': window.location.hostname,
+                    'is_live_stream': false,
+                    'timestamp': new Date()
+                };
 
-            payload.product_categories.push('betslip-frankel');
-            payload.product_ids.push(eventData.id+'-'+runnerName);
-            payload.product_quantities.push("1");
-            payload.product_prices.push("0");
-            
-            /*
-                    "product_info_5": ["^betAdd^Ayman^6/1 To Win^14:19:00^CAROUSEL^live^false^commentary^false"],
-        "adb_list_1": ["DATE^20181031", "TIME^14:00", "COUNTRY^SWE", "LOCATION^bro_park", "RUNNER^Ayman", "ODDS^6/1", "WIDGET^CAROUSEL", "TIMEADDSLIP^1540995409294", "LIVESTREAM^false", "COMMENTARY^false"],
-            
-            
-            */
-            
-            payload.product_info_5.push(frankeAttribution+'betAdd'+'^'+runnerName+'^'+replaceLines(_satellite.containerArray[containerArrayLength - 1][2],false).substring(1)+'^'+
-              replaceLines(replaceChar(_satellite.containerArray[containerArrayLength - 1][0]),true) + ":00"+'^'+((typeof eventData.odds === "undefined")?'FORECAST':eventData.widgetName)+'^live^'+eventData.watchingLiveStreaming+((commentary)?"^commentary^true":"^commentary^false"))
-            
-            payload.adb_list_1.push( (idSplit = eventData.id.split('.'), "DATE^"+idSplit[0].substring(0,idSplit[0].length - 4)) );  
-            payload.adb_list_1.push( (dateFormat = idSplit[0].substring(idSplit[0].length-4,idSplit[0].length), "TIME^"+dateFormat.slice(0,2)+":"+dateFormat.slice(2,4)) );
-            payload.adb_list_1.push("COUNTRY^"+idSplit[2]);
-            payload.adb_list_1.push("LOCATION^"+idSplit[3]);
-            payload.adb_list_1.push("RUNNER^"+runnerName);      
-            payload.adb_list_1.push("ODDS^"+((typeof eventData.odds === "undefined")?'FORECAST':eventData.odds));
-            payload.adb_list_1.push("WIDGET^"+((typeof eventData.odds === "undefined")?'forecast':eventData.widgetName));
-            payload.adb_list_1.push("TIMEADDSLIP^"+eventData.timestamp);
-            payload.adb_list_1.push("LIVESTREAM^"+eventData.watchingLiveStreaming);
-            payload.adb_list_1.push("COMMENTARY^"+((commentary)?"true":"false"));
-          
-            
-            //send payload
-            utag.link(payload);
+                /* Get items in betslip */
+                var betSlipAddResults = betSlipUtil($('.fkrc-bet-item'));
+                /* Define or pass */
+                _satellite.containerArray = _satellite.containerArray || [], betSlipListSize = 4;
+                /* Add values into 2D array for simple access */
+                _satellite.containerArray.push(betSlipAddResults.splice(betSlipAddResults.length - 4, betSlipListSize));
 
-          }, 800);
+                //populate live streaming value as true in Telium and fire event9
+                if (eventData.watchingLiveStreaming) {
+                    payload.is_live_stream = true;
+                }
+
+                var containerArrayLength = _satellite.containerArray.length,
+                    frankeAttribution = (typeof _satellite.readCookie('dtm_ffm_attribution') !== "undefined") ? _satellite.readCookie('dtm_ffm_attribution') : '^',
+                    runnerName = replaceLines(_satellite.containerArray[containerArrayLength - 1][1], false).substring(1),
+                    commentary = ($('#popup-audiostream')[0]) ? true : false,
+                    idSplit, dateFormat;
+
+                payload.product_categories = [];
+                payload.product_ids = [];
+                payload.product_quantities = [];
+                payload.product_prices = [];
+                payload.product_info_5 = []; //evar40
+                payload.adb_list_1 = []; //list1
+
+                payload.product_categories.push('betslip-frankel');
+                payload.product_ids.push(eventData.id + '-' + runnerName);
+                payload.product_quantities.push("1");
+                payload.product_prices.push("0");
+
+                /*
+                        "product_info_5": ["^betAdd^Ayman^6/1 To Win^14:19:00^CAROUSEL^live^false^commentary^false"],
+            "adb_list_1": ["DATE^20181031", "TIME^14:00", "COUNTRY^SWE", "LOCATION^bro_park", "RUNNER^Ayman", "ODDS^6/1", "WIDGET^CAROUSEL", "TIMEADDSLIP^1540995409294", "LIVESTREAM^false", "COMMENTARY^false"],
+                
+                
+                */
+
+                payload.product_info_5.push(frankeAttribution + 'betAdd' + '^' + runnerName + '^' + replaceLines(_satellite.containerArray[containerArrayLength - 1][2], false).substring(1) + '^' +
+                    replaceLines(replaceChar(_satellite.containerArray[containerArrayLength - 1][0]), true) + ":00" + '^' + ((typeof eventData.odds === "undefined") ? 'FORECAST' : eventData.widgetName) + '^live^' + eventData.watchingLiveStreaming + ((commentary) ? "^commentary^true" : "^commentary^false"))
+
+                payload.adb_list_1.push((idSplit = eventData.id.split('.'), "DATE^" + idSplit[0].substring(0, idSplit[0].length - 4)));
+                payload.adb_list_1.push((dateFormat = idSplit[0].substring(idSplit[0].length - 4, idSplit[0].length), "TIME^" + dateFormat.slice(0, 2) + ":" + dateFormat.slice(2, 4)));
+                payload.adb_list_1.push("COUNTRY^" + idSplit[2]);
+                payload.adb_list_1.push("LOCATION^" + idSplit[3]);
+                payload.adb_list_1.push("RUNNER^" + runnerName);
+                payload.adb_list_1.push("ODDS^" + ((typeof eventData.odds === "undefined") ? 'FORECAST' : eventData.odds));
+                payload.adb_list_1.push("WIDGET^" + ((typeof eventData.odds === "undefined") ? 'forecast' : eventData.widgetName));
+                payload.adb_list_1.push("TIMEADDSLIP^" + eventData.timestamp);
+                payload.adb_list_1.push("LIVESTREAM^" + eventData.watchingLiveStreaming);
+                payload.adb_list_1.push("COMMENTARY^" + ((commentary) ? "true" : "false"));
+
+
+                //send payload
+                utag.link(payload);
+
+            }, 800);
 
 
         }
@@ -326,60 +326,60 @@ document.getElementById('dtmEventTarget').addEventListener('betAdd',
 
 
 document.getElementById('dtmEventTarget').addEventListener('betPlace',
-    function(evt) {
+    function (evt) {
 
         var eventData = evt.detail;
         var domain = _satellite.getVar("Domain");
 
         var payload = {
-                'event_name': 'betPlace',
-                'event_action_type':'frankel place bet',
-                'track_link_name':'frankel place bet',
-                'adb_timestamp':Math.round(new Date().getTime()/1000),
-                'location':_satellite.getVar("browserLocale"),
-                'adb_domain':window.location.hostname,
-                'transaction_id':eventData.transactionId,
-                'purchase_id':eventData.transactionId,
-                'is_live_stream':false,
-                'timestamp': new Date()
-            };
+            'event_name': 'betPlace',
+            'event_action_type': 'frankel place bet',
+            'track_link_name': 'frankel place bet',
+            'adb_timestamp': Math.round(new Date().getTime() / 1000),
+            'location': _satellite.getVar("browserLocale"),
+            'adb_domain': window.location.hostname,
+            'transaction_id': eventData.transactionId,
+            'purchase_id': eventData.transactionId,
+            'is_live_stream': false,
+            'timestamp': new Date()
+        };
 
 
-if(typeof eventData!=="undefined"){
-  
-          trackLinkName = 'frankel place bet';
+        if (typeof eventData !== "undefined") {
 
-          var numberOfProducts = eventData.bets.length;
+            trackLinkName = 'frankel place bet';
 
-          payload.product_categories = [];
-          payload.product_ids = [];
-          payload.product_quantities = [];
-          payload.product_prices = [];
+            var numberOfProducts = eventData.bets.length;
 
-          /* Delay added because of Betslip rendering time vs event time */
-          setTimeout(function(){
-            
-            var allBets = $('.fkrc-bet-receipt-ticket__runner');
-            var namevalues = [];
-            
-            for (var ty = 0; ty < allBets.length; ty++){
-                  namevalues.push($(allBets[ty]).text())
-            }
+            payload.product_categories = [];
+            payload.product_ids = [];
+            payload.product_quantities = [];
+            payload.product_prices = [];
 
-            for(var i=0; i < numberOfProducts;i++) {
+            /* Delay added because of Betslip rendering time vs event time */
+            setTimeout(function () {
 
-              payload.product_categories.push('betplace-frankel')
-              payload.product_ids.push(eventData.bets[i].id+'-'+namevalues[i])
-              payload.product_quantities.push('1')
-              payload.product_prices.push(eventData.bets[i].stake)
-          
-            }
+                var allBets = $('.fkrc-bet-receipt-ticket__runner');
+                var namevalues = [];
 
-          
-            //send payload
-            utag.link(payload); 
+                for (var ty = 0; ty < allBets.length; ty++) {
+                    namevalues.push($(allBets[ty]).text())
+                }
 
-          }, 500);
+                for (var i = 0; i < numberOfProducts; i++) {
+
+                    payload.product_categories.push('betplace-frankel')
+                    payload.product_ids.push(eventData.bets[i].id + '-' + namevalues[i])
+                    payload.product_quantities.push('1')
+                    payload.product_prices.push(eventData.bets[i].stake)
+
+                }
+
+
+                //send payload
+                utag.link(payload);
+
+            }, 500);
 
 
         }
@@ -387,60 +387,60 @@ if(typeof eventData!=="undefined"){
 
 
     });
-    
+
 /* this is a temporary measure due to betPlace event being unavailable from front end - ADC-711 */
 document.getElementById('dtmEventTarget').addEventListener('betPlaceFiller',
-    function(evt) {
+    function (evt) {
 
         var eventData = evt.detail; // defined from scraping page as missing event means missing bet values
         var domain = _satellite.getVar("Domain");
 
         var payload = {
-                'event_name': 'betPlace',
-                'event_action_type':'frankel place bet',
-                'track_link_name':'frankel place bet',
-                'adb_timestamp':Math.round(new Date().getTime()/1000),
-                'location':_satellite.getVar("browserLocale"),
-                'adb_domain':window.location.hostname,
-                'transaction_id':'in-fill:' + new Date().getTime(), // won't align to Frankel transactionId
-                'purchase_id':'in-fill:' + new Date().getTime(), //temporary neasure
-                'is_live_stream':false,
-                'timestamp': new Date()
-            };
+            'event_name': 'betPlace',
+            'event_action_type': 'frankel place bet',
+            'track_link_name': 'frankel place bet',
+            'adb_timestamp': Math.round(new Date().getTime() / 1000),
+            'location': _satellite.getVar("browserLocale"),
+            'adb_domain': window.location.hostname,
+            'transaction_id': 'in-fill:' + new Date().getTime(), // won't align to Frankel transactionId
+            'purchase_id': 'in-fill:' + new Date().getTime(), //temporary neasure
+            'is_live_stream': false,
+            'timestamp': new Date()
+        };
 
 
-if(typeof eventData!=="undefined"){
-  
-          trackLinkName = 'frankel place bet';
+        if (typeof eventData !== "undefined") {
 
-          payload.product_categories = [];
-          payload.product_ids = [];
-          payload.product_quantities = [];
-          payload.product_prices = [];
+            trackLinkName = 'frankel place bet';
 
-          /* Delay added because of Betslip rendering time vs event time */
-          setTimeout(function(){
-            
-            var allBets = $('.fkrc-bet-receipt-ticket__runner');
-            var namevalues = [];
-            
-            for (var ty = 0; ty < allBets.length; ty++){
-                  namevalues.push($(allBets[ty]).text());
-            }
+            payload.product_categories = [];
+            payload.product_ids = [];
+            payload.product_quantities = [];
+            payload.product_prices = [];
 
-            for(var i=0; i <  allBets.length;i++) {
-              if (typeof namevalues[i] === 'string'){
-              payload.product_categories.push('betplace-frankel[infill]');
-              payload.product_ids.push('Infill:'+namevalues[i] + '-' + replaceLines($('.fkrc-bet-receipt-ticket__bet-details')[i].innerText)); //just adding name as ID due
-              payload.product_quantities.push('1');
-              payload.product_prices.push(replaceLines(replaceChar($('.fkrc-bet-receipt-ticket__stake')[i].innerText),true).slice(1));
-              }
-            }
+            /* Delay added because of Betslip rendering time vs event time */
+            setTimeout(function () {
 
-            //send payload
-            utag.link(payload); 
+                var allBets = $('.fkrc-bet-receipt-ticket__runner');
+                var namevalues = [];
 
-          }, 1000);
+                for (var ty = 0; ty < allBets.length; ty++) {
+                    namevalues.push($(allBets[ty]).text());
+                }
+
+                for (var i = 0; i < allBets.length; i++) {
+                    if (typeof namevalues[i] === 'string') {
+                        payload.product_categories.push('betplace-frankel[infill]');
+                        payload.product_ids.push('Infill:' + namevalues[i] + '-' + replaceLines($('.fkrc-bet-receipt-ticket__bet-details')[i].innerText)); //just adding name as ID due
+                        payload.product_quantities.push('1');
+                        payload.product_prices.push(replaceLines(replaceChar($('.fkrc-bet-receipt-ticket__stake')[i].innerText), true).slice(1));
+                    }
+                }
+
+                //send payload
+                utag.link(payload);
+
+            }, 1000);
 
 
         }
@@ -450,10 +450,10 @@ if(typeof eventData!=="undefined"){
     });
 
 
-/*Frankel Finding Methods end */   
+/*Frankel Finding Methods end */
 
 document.getElementById('dtmEventTarget').addEventListener('sportbookEvents',
-    function(evt) {
+    function (evt) {
         var videoPlayerLoad = _satellite.readCookie('currentVidDisplay');
         _satellite.removeCookie('currentVidDisplay');
         var eventData = evt.detail.data;
@@ -520,8 +520,8 @@ document.getElementById('dtmEventTarget').addEventListener('sportbookEvents',
                         eventData.kambi.ecommerce.add.products[0]['bet details'] :
                         "";
                     payload.product_info_2.push(t);
-                    if(_satellite.getVar('kambiVisualisaitonDeduplicationStatus')) {
-                      payload.product_info_8.push(_satellite.getVar('kambiVisualisaitonDeduplicationStatus'));
+                    if (_satellite.getVar('kambiVisualisaitonDeduplicationStatus')) {
+                        payload.product_info_8.push(_satellite.getVar('kambiVisualisaitonDeduplicationStatus'));
                     }
 
                     break;
@@ -568,15 +568,15 @@ document.getElementById('dtmEventTarget').addEventListener('sportbookEvents',
 
                         var isApp = _satellite.getVar('cms.device.isApp');
                         fireView = true;
-                        
+
                         if (isApp === "true")
                             payload.adb_page_name_extended = _satellite.getVar('domain') + ":::APP" + ':betting' + eventData.kambi.page.path.replace(/\//g, ':');
                         else
                             payload.adb_page_name_extended = _satellite.getVar('domain') + ":::" + _satellite.getVar('cms.device.group') + ':betting' + eventData.kambi.page.path.replace(/\//g, ':');
 
                         payload.adb_page_name_extended = payload.adb_page_name_extended.replace('{layout_wide,layout_wide,layout_wide}', '');
-                        payload.adf_page_name = 'betting'+eventData.kambi.page.path.replace(/\//g, ':').replace('{layout_wide,layout_wide,layout_wide}', '');
-                        
+                        payload.adf_page_name = 'betting' + eventData.kambi.page.path.replace(/\//g, ':').replace('{layout_wide,layout_wide,layout_wide}', '');
+
                         payload.adb_gpv = utag.data.previousNavigationPathModule.get();
 
                         var hashSplit = document.location.hash.split('/');
@@ -611,25 +611,25 @@ document.getElementById('dtmEventTarget').addEventListener('sportbookEvents',
                                 eventData.kambi.page.type.replace(/;/g, '-').replace(/,/g, '-'));
 
                         }
-                        
-                    //this is part of kambi visualisation tabs deduplication condition, so that we track kambi visualisation tabs only one after page view happens. Sometimes kambi visualisation tabs is executed multiple times
-                    _satellite.setVar('kambiVisualisaitonDeduplicationFlag','pageView');
+
+                        //this is part of kambi visualisation tabs deduplication condition, so that we track kambi visualisation tabs only one after page view happens. Sometimes kambi visualisation tabs is executed multiple times
+                        _satellite.setVar('kambiVisualisaitonDeduplicationFlag', 'pageView');
 
                     }
                     break;
                 case 'kambi visualisation tabs':
-                    
-                    if(typeof window.optimizelyNoSegmentsFlag!=="undefined" && window.optimizelyNoSegmentsFlag===1) {
+
+                    if (typeof window.optimizelyNoSegmentsFlag !== "undefined" && window.optimizelyNoSegmentsFlag === 1) {
                         _satellite.cookie.set('optimizelyNoSegmentsFlag', '1', { expires: 30 });
                     }
 
-                      //this is create so that when add to bet happens we can get this information and attribute current status of visualisation tabs to added bets
-                      _satellite.setVar('kambiVisualisaitonDeduplicationStatus', eventData.kambi.tabs.activevisualisationtab  +':'+ eventData.kambi.tabs.streaming +':'+ eventData.kambi.tabs.visualisation +':'+ eventData.kambi.tabs.livestat);
+                    //this is create so that when add to bet happens we can get this information and attribute current status of visualisation tabs to added bets
+                    _satellite.setVar('kambiVisualisaitonDeduplicationStatus', eventData.kambi.tabs.activevisualisationtab + ':' + eventData.kambi.tabs.streaming + ':' + eventData.kambi.tabs.visualisation + ':' + eventData.kambi.tabs.livestat);
 
 
-                      if(_satellite.getVar('kambiVisualisaitonDeduplicationFlag')==='pageView' && eventData.kambi.page.type === "event detail page" && document.querySelector('a[class="KambiBC-modularized-event-path__fragment"]') !== null && document.querySelector('a[class="KambiBC-modularized-event-path__fragment"]').href.split('#')[1]==="filter/football") {
+                    if (_satellite.getVar('kambiVisualisaitonDeduplicationFlag') === 'pageView' && eventData.kambi.page.type === "event detail page" && document.querySelector('a[class="KambiBC-modularized-event-path__fragment"]') !== null && document.querySelector('a[class="KambiBC-modularized-event-path__fragment"]').href.split('#')[1] === "filter/football") {
                         //this condition is created so that we can load this event on sportsbook football event detail page. Deduplication is added because sometimes kambi visualisaiton tabs event is dispatched more than one time. We caputre only the first time it appears after page view event.
-                        _satellite.setVar('kambiVisualisaitonDeduplicationFlag','deduplicate');
+                        _satellite.setVar('kambiVisualisaitonDeduplicationFlag', 'deduplicate');
                         fireView = false;
                         fireLink = true;
                         var hashSplit = document.location.hash.split('/');
@@ -644,7 +644,7 @@ document.getElementById('dtmEventTarget').addEventListener('sportbookEvents',
                             payload.product_ids = [];
                             payload.product_quantities = [];
                             payload.product_prices = [];
-                            
+
                             payload.product_categories.push("betslipVisualisation");
                             payload.product_ids.push(eventSKU);
                             payload.product_quantities.push("1");
@@ -652,24 +652,24 @@ document.getElementById('dtmEventTarget').addEventListener('sportbookEvents',
                         }
 
                         //this set of conditions determine active visualisation tab. The same data is available in the kambi visualisation event, but we do it this way because kambi visualisation tabs can be executed multiple times after page view happens, for each vis tab element separately, so we can't rely on eventData.kambi.tabs.activevisualisationtab
-                            var activevisualisationtab = '';
-                            if(eventData.kambi.tabs.streaming==='true') {
-                              activevisualisationtab = 'streaming';
-                            } else if (eventData.kambi.tabs.visualisation==='true') {
-                              activevisualisationtab = 'visualisation';
-                            } else if (eventData.kambi.tabs.livestat === 'true') {
-                              activevisualisationtab = 'livestat';
-                            }
-                            
-                            payload.product_info_8.push(activevisualisationtab +':'+ eventData.kambi.tabs.streaming +':'+ eventData.kambi.tabs.visualisation +':'+ eventData.kambi.tabs.livestat);
+                        var activevisualisationtab = '';
+                        if (eventData.kambi.tabs.streaming === 'true') {
+                            activevisualisationtab = 'streaming';
+                        } else if (eventData.kambi.tabs.visualisation === 'true') {
+                            activevisualisationtab = 'visualisation';
+                        } else if (eventData.kambi.tabs.livestat === 'true') {
+                            activevisualisationtab = 'livestat';
+                        }
 
-                            //event81
-                            
+                        payload.product_info_8.push(activevisualisationtab + ':' + eventData.kambi.tabs.streaming + ':' + eventData.kambi.tabs.visualisation + ':' + eventData.kambi.tabs.livestat);
 
+                        //event81
 
 
 
-                      }
+
+
+                    }
 
 
 
@@ -767,7 +767,7 @@ document.getElementById('dtmEventTarget').addEventListener('sportbookEvents',
     });
 
 document.getElementById('dtmEventTarget').addEventListener('withdrawalCompleted',
-    function(evt) {
+    function (evt) {
         var eventData = evt.detail;
 
         utag.link({
@@ -777,7 +777,7 @@ document.getElementById('dtmEventTarget').addEventListener('withdrawalCompleted'
     });
 
 document.getElementById('dtmEventTarget').addEventListener('bonusAccept',
-    function(evt) {
+    function (evt) {
         var eventData = evt.detail;
 
         utag.link({
@@ -787,7 +787,7 @@ document.getElementById('dtmEventTarget').addEventListener('bonusAccept',
     });
 
 document.getElementById('dtmEventTarget').addEventListener('PromotionOptIn',
-    function(evt) {
+    function (evt) {
         var eventData = evt.detail;
 
         utag.link({
@@ -797,10 +797,10 @@ document.getElementById('dtmEventTarget').addEventListener('PromotionOptIn',
         });
     });
 
-var liveStreamingClickListener = function() {
+var liveStreamingClickListener = function () {
     var playerBtn = document.querySelector("button.KambiBC-video-stream-player__play-btn");
     if (playerBtn) {
-        playerBtn.addEventListener("click", function() {
+        playerBtn.addEventListener("click", function () {
             utag.link({
                 'event_name': 'liveStreamingClick',
                 'track_link_name': 'Live streaming player link click'
@@ -816,7 +816,7 @@ document.getElementById('dtmEventTarget').addEventListener('pageLoaded', liveStr
 window.addEventListener("hashchange", liveStreamingClickListener, false);
 
 document.getElementById('dtmEventTarget').addEventListener('exclusion',
-    function(evt) {
+    function (evt) {
         var videoPlayerLoad = _satellite.readCookie('currentVidDisplay');
         _satellite.removeCookie('currentVidDisplay');
         var eventData = evt.detail;
@@ -848,7 +848,7 @@ document.getElementById('dtmEventTarget').addEventListener('exclusion',
     });
 
 document.getElementById('dtmEventTarget').addEventListener('SetDepositLimit',
-    function(evt) {
+    function (evt) {
         var eventData = evt.detail;
         var t = 'undefined';
 
@@ -877,23 +877,23 @@ document.getElementById('dtmEventTarget').addEventListener('SetDepositLimit',
 
 //Add right click event Listener for carousel and promo button
 if (document.getElementById('top') !== null && document.getElementById('top').length > 0) {
-    document.getElementById('top').addEventListener('contextmenu', function(ev) {
-                _satellite.setCookie('rightClick','true');
+    document.getElementById('top').addEventListener('contextmenu', function (ev) {
+        _satellite.setCookie('rightClick', 'true');
     });
 }
 if (typeof document.getElementById('nav-main') !== "undefined") {
     var mnv = document.getElementById('nav-main');
     var subnav = mnv.getElementsByClassName('list-item');
-    subnav[subnav.length -1].addEventListener('contextmenu', function(ev) {
-                _satellite.setCookie('rightClick','true');
+    subnav[subnav.length - 1].addEventListener('contextmenu', function (ev) {
+        _satellite.setCookie('rightClick', 'true');
     })
 }
 
 if (window.location.pathname.indexOf("registration") > -1 ||
     window.location.pathname.indexOf("blog") > -1) {
 
-    var spaPageView = function() {
-        window.setTimeout(function() {
+    var spaPageView = function () {
+        window.setTimeout(function () {
             var payload = {
                 'event_name': 'spaPageView'
             };
@@ -922,9 +922,9 @@ if (window.location.pathname.indexOf("registration") > -1 ||
 
     window.addEventListener("hashchange", spaPageView, false);
 
-    (function(history) {
+    (function (history) {
         var pushState = history.pushState;
-        history.pushState = function(state) {
+        history.pushState = function (state) {
             if (typeof history.onpushstate == "function") {
                 history.onpushstate({
                     state: state
