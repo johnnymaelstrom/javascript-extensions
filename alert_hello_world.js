@@ -1,1 +1,1 @@
-alert("Hello World"); //simple alert
+alert("Hello World"); //simple JavaScript alert
