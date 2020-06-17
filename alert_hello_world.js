@@ -1,2 +1,1 @@
-alert("Hello World"); //a simple JavaScript alert updated
-console.log("");
+console.log("Hello World"); //a simple JavaScript log message
